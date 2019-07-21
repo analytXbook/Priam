@@ -96,12 +96,14 @@ public class AWSInstanceInfo implements InstanceInfo {
         }
         return publicHostName;
     }
-
+/**
+We are using a single DC deploy, so getPublicIP finction can use Private IPs
+**/
     public String getPublicIP() {
         if (publicIp == null) {
             publicIp =
                     SystemUtils.getDataFromUrl(
-                            "http://169.254.169.254/latest/meta-data/public-ipv4");
+                            "http://169.254.169.254/latest/meta-data/local-ipv4");
         }
         return publicIp;
     }
