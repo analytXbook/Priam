@@ -19,6 +19,7 @@ package com.netflix.priam.config;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.common.collect.Lists;
 import com.netflix.priam.configSource.IConfigSource;
 import com.netflix.priam.identity.config.InstanceInfo;
 import com.netflix.priam.scheduler.UnsupportedTypeException;
@@ -84,7 +85,7 @@ public class PriamConfiguration implements IConfiguration {
 
     @Override
     public String getBackupPrefix() {
-        return config.get(PRIAM_PRE + ".s3.bucket", "cassandra-archive");
+        return config.get(PRIAM_PRE + ".s3.bucket", "nd-app-cassandra-backup");
     }
 
     @Override
@@ -131,7 +132,7 @@ public class PriamConfiguration implements IConfiguration {
 
     @Override
     public String getBackupCommitLogLocation() {
-        return config.get(PRIAM_PRE + ".backup.commitlog.location", "");
+        return config.get(PRIAM_PRE + ".backup.commitlog.location", "/opt/cassandra/backup_commit_log");
     }
 
     @Override
@@ -192,7 +193,11 @@ public class PriamConfiguration implements IConfiguration {
 
     @Override
     public List<String> getRacs() {
-        return config.getList(PRIAM_PRE + ".zones.available", instanceInfo.getDefaultRacks());
+        List<String> defaultZones = Lists.newArrayList();
+        defaultZones.add("us-east-1b");
+        defaultZones.add("us-east-1c");
+        defaultZones.add("us-east-1d");
+        return config.getList(PRIAM_PRE + ".zones.available", defaultZones);
     }
 
     @Override
@@ -491,7 +496,7 @@ public class PriamConfiguration implements IConfiguration {
     }
 
     public boolean isNativeTransportEnabled() {
-        return config.get(PRIAM_PRE + ".nativeTransport.enabled", false);
+        return config.get(PRIAM_PRE + ".nativeTransport.enabled", true);
     }
 
     public int getConcurrentReadsCnt() {

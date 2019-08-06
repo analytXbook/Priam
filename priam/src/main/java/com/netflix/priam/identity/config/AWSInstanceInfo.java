@@ -92,7 +92,7 @@ public class AWSInstanceInfo implements InstanceInfo {
         if (publicHostName == null) {
             publicHostName =
                     SystemUtils.getDataFromUrl(
-                            "http://169.254.169.254/latest/meta-data/public-hostname");
+                            "http://169.254.169.254/latest/meta-data/local-hostname");
         }
         return publicHostName;
     }
